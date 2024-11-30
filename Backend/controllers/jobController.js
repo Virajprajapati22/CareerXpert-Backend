@@ -123,7 +123,9 @@ export const getAllJobs = catchAsync(async (req, res, next) => {
     if (skip >= numJobs) throw new Error("This page does not exist");
   }
 
-  const jobs = await query;
+  const jobs = await query.populate({
+    path: "company",
+  });
 
   res.status(200).json({
     status: "success",
@@ -134,7 +136,7 @@ export const getAllJobs = catchAsync(async (req, res, next) => {
 
 // Get job by ID
 export const getJobById = catchAsync(async (req, res, next) => {
-  const job = await Job.findById(req.params.id).populate("company", "name");
+  const job = await Job.findById(req.params.id).populate("company");
 
   if (!job) {
     return next(new AppError("Job not found", 404));
