@@ -2,6 +2,7 @@ import AppError from "../middlewares/errorHandler.js";
 import { catchAsync } from "../middlewares/catchAsync.js";
 import { Company } from "../models/companyModel.js";
 import { Review } from "../models/reviewModel.js";
+import { Job } from "../models/jobModel.js";
 
 export const registerCompany = catchAsync(async (req, res, next) => {
   try {
@@ -118,6 +119,9 @@ export const deleteCompany = catchAsync(async (req, res, next) => {
   if (!deleteCompany) {
     return next(new AppError("You can only delete your companies", 403));
   }
+
+  // Delete all jobs associated with the company
+  await Job.deleteMany({ company: req.params.id });
 
   res.status(200).json({
     status: "success",

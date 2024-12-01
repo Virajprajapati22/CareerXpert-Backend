@@ -136,7 +136,9 @@ export const getAllJobs = catchAsync(async (req, res, next) => {
 
 // Get job by ID
 export const getJobById = catchAsync(async (req, res, next) => {
-  const job = await Job.findById(req.params.id).populate("company");
+  const job = await Job.findById(req.params.id).populate("company").populate({
+    path: "applications",
+  });
 
   if (!job) {
     return next(new AppError("Job not found", 404));
