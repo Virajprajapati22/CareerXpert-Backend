@@ -6,7 +6,7 @@ dotenv.config();
 export const connection = () => {
   mongoose
     .connect(process.env.DATABASE, {
-      dbName: "CareerXpert",
+      dbName: process.env.DBNAME,
     })
     .then(() => {
       console.log("DB connection Successfull");
